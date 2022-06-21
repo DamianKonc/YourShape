@@ -2,11 +2,10 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const passwordConfirmationRef = useRef();
-  const { signup } = useAuth();
+  const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -14,17 +13,13 @@ const SignUp = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
-      return setError("passwords do not match");
-    }
-
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await login(emailRef.current.value, passwordRef.current.value);
       navigate("/");
     } catch {
-      setError("failed to create an account");
+      setError("failed to sign in");
     }
     setLoading(false);
   }
@@ -47,25 +42,17 @@ const SignUp = () => {
             placeholder="Password"
           />
         </label>
-        <label>
-          Password
-          <input
-            id="checkPassword"
-            type="password"
-            ref={passwordConfirmationRef}
-            required
-            placeholder="Check password"
-          />
-        </label>
+
         <button type="submit" disabled={loading}>
-          Sign Up
+          Log In
         </button>
       </form>
+      <Link to="/forgot-password">Forgot Password?</Link>
       <div>
-        Allready have an account? <Link to="/login">Log In</Link>{" "}
+        Need an account? <Link to="/signup">Sign Up</Link>
       </div>
     </>
   );
 };
 
-export default SignUp;
+export default Login;
