@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const SignUp = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login } = useAuth();
+  const passwordConfirmationRef = useRef();
+  const { signup } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -13,13 +14,17 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
+      return setError("passwords do not match");
+    }
+
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
+      await signup(emailRef.current.value, passwordRef.current.value);
       navigate("/dashboard");
     } catch {
-      setError("failed to sign in");
+      setError("failed to create an account");
     }
     setLoading(false);
   }
@@ -42,17 +47,25 @@ const Login = () => {
             placeholder="Password"
           />
         </label>
-
+        <label>
+          Password
+          <input
+            id="checkPassword"
+            type="password"
+            ref={passwordConfirmationRef}
+            required
+            placeholder="Check password"
+          />
+        </label>
         <button type="submit" disabled={loading}>
-          Log In
+          Sign Up
         </button>
       </form>
-      <Link to="/forgot-password">Forgot Password?</Link>
       <div>
-        Need an account? <Link to="/signup">Sign Up</Link>
+        Allready have an account? <Link to="/">Log In</Link>{" "}
       </div>
     </>
   );
 };
 
-export default Login;
+export default SignUp;

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
   const emailRef = useRef();

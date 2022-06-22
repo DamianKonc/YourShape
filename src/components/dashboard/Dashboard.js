@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import "./dashboard.scss";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
