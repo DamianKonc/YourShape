@@ -13,9 +13,9 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route exact path="/" element={<Dashboard />} />
+          <Route exact path="/dashboard" element={<Dashboard />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/update-profile" element={<UpdateProfile />} />
         </Routes>

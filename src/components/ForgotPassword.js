@@ -38,7 +38,7 @@ const ForgotPassword = () => {
           Reset Password
         </button>
       </form>
-      <Link to="/login">Login</Link>
+      <Link to="/">Login</Link>
       <div>
         Need an account? <Link to="/signup">Sign Up</Link>
       </div>

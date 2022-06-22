@@ -8,7 +8,7 @@ const UpdateProfile = () => {
   const passwordConfirmationRef = useRef();
   const { currentUser, updatePassword, updateEmail } = useAuth();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   function handleSubmit(e) {
