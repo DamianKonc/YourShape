@@ -1,3 +1,39 @@
 .form {
-  font-size: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form__label {
+  font-size: 1.2rem;
+  align-self: center;
+  margin-bottom: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  max-width: 80%;
+}
+
+.form__btn {
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 30%;
+  transition: all 0.2s;
+  margin-bottom: 2rem;
+  align-self: center;
+}
+
+.form__btn:hover {
+  background-color: rgb(139, 139, 139);
+  cursor: pointer;
+}
+
+.form__label-input {
+  font-size: 1rem;
+  border-radius: 10px;
+  max-width: 60%;
+}
+
+.form__link {
+  color: rgb(135, 135, 135);
+  text-decoration: none;
 }

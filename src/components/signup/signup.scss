@@ -1,0 +1,38 @@
+.signup__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.3rem;
+}
+.signup__form-el {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.signup__form-el-input {
+  font-size: 1.1rem;
+  border-radius: 5px;
+}
+
+.link-element {
+  margin-top: 1rem;
+  color: rgb(135, 135, 135);
+  text-decoration: none;
+}
+
+.signup__form-btn {
+  font-size: 1.1rem;
+  padding: 5px 20%;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.signup__form-btn:hover {
+  background-color: rgb(152, 152, 152);
+}

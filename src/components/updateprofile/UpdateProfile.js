@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "../logo/Logo";
+import "./updateprofile.scss";
 
 const UpdateProfile = () => {
   const emailRef = useRef();
@@ -43,12 +45,14 @@ const UpdateProfile = () => {
 
   return (
     <>
+      <Logo />
       <h2>Update profile</h2>
       {error && <div>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form className="updateprofile__form" onSubmit={handleSubmit}>
+        <label className="updateprofile__form-el">
           Email
           <input
+            className="updateprofile__form-el-input"
             id="email"
             ref={emailRef}
             required
@@ -56,9 +60,10 @@ const UpdateProfile = () => {
             placeholder="Email"
           />
         </label>
-        <label>
+        <label className="updateprofile__form-el">
           Password
           <input
+            className="updateprofile__form-el-input"
             id="password"
             type="password"
             ref={passwordRef}
@@ -66,9 +71,10 @@ const UpdateProfile = () => {
             placeholder="Leave blank to keep the same"
           />
         </label>
-        <label>
+        <label className="updateprofile__form-el">
           Password
           <input
+            className="updateprofile__form-el-input"
             id="checkPassword"
             type="password"
             ref={passwordConfirmationRef}
@@ -76,12 +82,18 @@ const UpdateProfile = () => {
             placeholder="Leave blank to keep the same"
           />
         </label>
-        <button type="submit" disabled={loading}>
+        <button
+          className="updateprofile__form-btn"
+          type="submit"
+          disabled={loading}
+        >
           Update
         </button>
       </form>
       <div>
-        <Link to="/">Cancel</Link>{" "}
+        <Link className="link-element" to="/">
+          Cancel
+        </Link>{" "}
       </div>
     </>
   );

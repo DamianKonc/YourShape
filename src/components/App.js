@@ -7,10 +7,11 @@ import ForgotPassword from "./forgotpassword/ForgotPassword";
 import { AuthProvider } from "../context/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UpdateProfile from "./updateprofile/UpdateProfile";
+import "./app.scss";
 
 function App() {
   return (
-    <div>
+    <div className="app">
       <Router>
         <AuthProvider>
           <Routes>

@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "../logo/Logo";
+import "./signup.scss";
 
 const SignUp = () => {
   const emailRef = useRef();
@@ -31,15 +33,23 @@ const SignUp = () => {
 
   return (
     <>
+      <Logo />
       {error && <div>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form className="signup__form" onSubmit={handleSubmit}>
+        <label className="signup__form-el">
           Email
-          <input id="email" ref={emailRef} required placeholder="Email" />
+          <input
+            className="signup__form-el-input"
+            id="email"
+            ref={emailRef}
+            required
+            placeholder="Email"
+          />
         </label>
-        <label>
+        <label className="signup__form-el">
           Password
           <input
+            className="signup__form-el-input"
             id="password"
             type="password"
             ref={passwordRef}
@@ -47,9 +57,10 @@ const SignUp = () => {
             placeholder="Password"
           />
         </label>
-        <label>
-          Password
+        <label className="signup__form-el">
+          Password Confirmation
           <input
+            className="signup__form-el-input"
             id="checkPassword"
             type="password"
             ref={passwordConfirmationRef}
@@ -57,12 +68,15 @@ const SignUp = () => {
             placeholder="Check password"
           />
         </label>
-        <button type="submit" disabled={loading}>
+        <button className="signup__form-btn" type="submit" disabled={loading}>
           Sign Up
         </button>
       </form>
       <div>
-        Allready have an account? <Link to="/">Log In</Link>{" "}
+        Allready have an account?{" "}
+        <Link className="link-element" to="/">
+          Log In
+        </Link>{" "}
       </div>
     </>
   );

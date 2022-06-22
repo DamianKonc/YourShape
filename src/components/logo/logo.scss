@@ -1,0 +1,17 @@
+.logo__header {
+  &-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+  &-header {
+    text-align: center;
+    font-size: 2rem;
+    &-yellow {
+      color: rgb(253, 253, 0);
+    }
+    &-green {
+      color: green;
+    }
+  }
+}

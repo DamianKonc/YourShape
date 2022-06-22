@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import Logo from "../logo/Logo";
+import "./forgotpassword.scss";
 
 const ForgotPassword = () => {
   const emailRef = useRef();
@@ -25,22 +27,38 @@ const ForgotPassword = () => {
 
   return (
     <>
-      <h2>Reset password</h2>
+      <Logo />
+      <h2 className="forgotPassword__header">Reset password</h2>
       {error && <div>{error}</div>}
       {message && <div>{message}</div>}
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form className="forgotPassword__form" onSubmit={handleSubmit}>
+        <label className="forgotPassword__form-label">
           Email
-          <input id="email" ref={emailRef} required placeholder="Email" />
+          <input
+            className="forgotPassword__form-input"
+            id="email"
+            ref={emailRef}
+            required
+            placeholder="Email"
+          />
         </label>
 
-        <button type="submit" disabled={loading}>
+        <button
+          className="forgotPassword__form-btn"
+          type="submit"
+          disabled={loading}
+        >
           Reset Password
         </button>
       </form>
-      <Link to="/">Login</Link>
+      <Link className="link-element" to="/">
+        Login
+      </Link>
       <div>
-        Need an account? <Link to="/signup">Sign Up</Link>
+        Need an account?{" "}
+        <Link className="link-element" to="/signup">
+          Sign Up
+        </Link>
       </div>
     </>
   );

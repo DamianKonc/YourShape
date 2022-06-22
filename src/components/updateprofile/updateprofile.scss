@@ -1,0 +1,38 @@
+.updateprofile__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.updateprofile__form-el {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.updateprofile__form-el-input {
+  font-size: 1.1rem;
+  border-radius: 8px;
+}
+
+.updateprofile__form-btn {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  padding: 5px 20%;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.updateprofile__form-btn:hover {
+  background-color: rgb(152, 152, 152);
+}
+
+.link-element {
+  margin-top: 1rem;
+  color: rgb(135, 135, 135);
+  text-decoration: none;
+}
