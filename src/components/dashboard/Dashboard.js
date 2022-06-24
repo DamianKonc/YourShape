@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "../logo/Logo";
+import List from "../List/List";
+import ListElement from "../listElement/ListElement";
 import "./dashboard.scss";
 
 export default function Dashboard() {
@@ -19,12 +22,25 @@ export default function Dashboard() {
   }
   return (
     <>
-      <h2>Profile</h2>
+      <Logo></Logo>
       {error && <div>{error}</div>}
       <strong>Email:</strong> {currentUser.email}
-      <Link to="/update-profile">Update Profile</Link>
-      <div>Dashboard</div>
-      <button onClick={handleLogOut}>Log Out</button>
+      <List>
+        <ListElement>
+          <Link className="list-el-link" to="/dashboard/workout">
+            Workout
+          </Link>
+        </ListElement>
+        <ListElement>Your results</ListElement>
+        <ListElement>
+          <Link className="list-el-link" to="/update-profile">
+            Update Profile
+          </Link>
+        </ListElement>
+        <ListElement>
+          <button onClick={handleLogOut}>Log Out</button>
+        </ListElement>
+      </List>
     </>
   );
 }

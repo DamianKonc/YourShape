@@ -7,6 +7,7 @@ import ForgotPassword from "./forgotpassword/ForgotPassword";
 import { AuthProvider } from "../context/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UpdateProfile from "./updateprofile/UpdateProfile";
+import Workout from "./workout/Workout";
 import "./app.scss";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/update-profile" element={<UpdateProfile />} />
+            <Route path="/dashboard/workout" element={<Workout />} />
           </Routes>
         </AuthProvider>
       </Router>
