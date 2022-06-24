@@ -1,4 +1,9 @@
-.workout {
-  font-size: 2.5rem;
-  color: bisque;
+.overwrite {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.list-el-link {
+  text-decoration: none;
+  color: white;
 }

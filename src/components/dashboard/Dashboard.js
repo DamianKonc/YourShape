@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
 import List from "../List/List";
 import ListElement from "../listElement/ListElement";
+import YourResults from "../yourResults/YourResults";
 import "./dashboard.scss";
 
 export default function Dashboard() {
@@ -31,14 +32,21 @@ export default function Dashboard() {
             Workout
           </Link>
         </ListElement>
-        <ListElement>Your results</ListElement>
         <ListElement>
-          <Link className="list-el-link" to="/update-profile">
-            Update Profile
+          {" "}
+          <Link className="list-el-link" to="/dashboard/yourresults">
+            Your results
           </Link>
         </ListElement>
         <ListElement>
-          <button onClick={handleLogOut}>Log Out</button>
+          <Link className="list-el-link" to="/update-profile">
+            Update profile
+          </Link>
+        </ListElement>
+        <ListElement className="dashboard-btn-container">
+          <button className="dashboard-btn" onClick={handleLogOut}>
+            Log Out
+          </button>
         </ListElement>
       </List>
     </>
