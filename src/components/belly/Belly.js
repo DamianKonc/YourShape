@@ -2,11 +2,11 @@ import Logo from "../logo/Logo";
 import List from "../List/List";
 import ListElement from "../listElement/ListElement";
 
-import deepSquat from "../../img/nogi/przysiady.jpg";
-import lunges from "../../img/nogi/wykroki.jpg";
-import dumbbellSquat from "../../img/nogi/przysiadZHantlem.jpg";
-import standingBarbellCalfRaiseStandingCalfRaise from "../../img/nogi/lydki.jpg";
-import frontSquat from "../../img/nogi/przysiadyZeSztangaZPrzodu.jpg";
+import plank from "../../img/brzuch/plank.jpg";
+import LyingFloorLegRaise from "../../img/brzuch/UnoszenieNog.jpg";
+import SitUp from "../../img/brzuch/brzuszki.jpg";
+import pullingthelegstothechestinthesupport from "../../img/brzuch/przyciaganieNog.jpg";
+import alternatingelbowtokneecrunch from "../../img/brzuch/naprzemiennePrzyciaganie.jpg";
 
 export default function Belly() {
   return (
@@ -14,30 +14,30 @@ export default function Belly() {
       <Logo />
       <List>
         <ListElement>
-          <img className="chest-img" src={deepSquat} />{" "}
-          <p className="chest-paragraph">Deep Squat</p>
+          <img className="chest-img" src={plank} />{" "}
+          <p className="chest-paragraph">Plank</p>
         </ListElement>
         <ListElement>
-          <img className="chest-img" src={lunges} />
-          <p className="chest-paragraph">Lunges</p>
+          <img className="chest-img" src={LyingFloorLegRaise} />
+          <p className="chest-paragraph">Lying Floor Leg Raise</p>
         </ListElement>
         <ListElement>
-          <img className="chest-img" src={dumbbellSquat} />
-          <p className="chest-paragraph">Dumbbell Squat</p>
+          <img className="chest-img" src={SitUp} />
+          <p className="chest-paragraph"> Sit up</p>
         </ListElement>
         <ListElement>
           <img
             className="chest-img"
-            src={standingBarbellCalfRaiseStandingCalfRaise}
+            src={pullingthelegstothechestinthesupport}
           />
           <p className="chest-paragraph">
             {" "}
-            Standing Barbell Calf Raise, Standing Calf Raise
+            Pulling The Legs To The Chest In The Support
           </p>
         </ListElement>
         <ListElement>
-          <img className="chest-img" src={frontSquat} />
-          <p className="chest-paragraph">Front Squat</p>
+          <img className="chest-img" src={alternatingelbowtokneecrunch} />
+          <p className="chest-paragraph">Alternating elbow to knee crunch</p>
         </ListElement>
       </List>
     </>
