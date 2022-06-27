@@ -2,16 +2,18 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
+import { auth } from "../../dataBase/firebase";
+import { updatePassword, updateEmail } from "firebase/auth";
 import "./updateprofile.scss";
 
 const UpdateProfile = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
-  const { currentUser, updatePassword, updateEmail } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const user = auth.currentUser;
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -24,11 +26,11 @@ const UpdateProfile = () => {
     setLoading(true);
     setError("");
 
-    if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateEmail(emailRef.current.value));
+    if (emailRef.current.value !== auth.currentUser.email) {
+      updateEmail(user, emailRef.current.value);
     }
-    if (passwordRef.current.value !== currentUser.password) {
-      promises.push(updatePassword(passwordRef.current.value));
+    if (passwordRef.current.value !== auth.currentUser.password) {
+      updatePassword(user, passwordRef.current.value);
     }
 
     Promise.all(promises)
@@ -56,7 +58,7 @@ const UpdateProfile = () => {
             id="email"
             ref={emailRef}
             required
-            defaultValue={currentUser.email}
+            defaultValue={auth.currentUser.email}
             placeholder="Email"
           />
         </label>
