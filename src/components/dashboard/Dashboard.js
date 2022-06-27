@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
@@ -14,13 +14,17 @@ export default function Dashboard() {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUserName(user.email);
-    } else {
-      setUserName("No logged user");
-    }
-  });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserName(user.email);
+      } else {
+        setUserName("No logged user");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   async function handleLogOut() {
     setError("");
