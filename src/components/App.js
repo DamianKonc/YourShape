@@ -10,12 +10,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UpdateProfile from "./updateprofile/UpdateProfile";
 import Workout from "./workout/Workout";
 import YourResults from "./yourResults/YourResults";
-import Chest from "./chest/Chest";
-import Back from "./back/Back";
-import Legs from "./legs/Legs";
-import Belly from "./belly/Belly";
-import Biceps from "./biceps/Biceps";
-import Triceps from "./triceps/Triceps";
 import "./app.scss";
 
 function App() {
@@ -31,12 +25,6 @@ function App() {
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/dashboard/workout" element={<Workout />} />
             <Route path="/dashboard/yourresults" element={<YourResults />} />
-            <Route path="/dashboard/workout/chest" element={<Chest />} />
-            <Route path="/dashboard/workout/back" element={<Back />} />
-            <Route path="/dashboard/workout/legs" element={<Legs />} />
-            <Route path="/dashboard/workout/belly" element={<Belly />} />
-            <Route path="/dashboard/workout/biceps" element={<Biceps />} />
-            <Route path="/dashboard/workout/triceps" element={<Triceps />} />
           </Routes>
         </AuthProvider>
       </Router>
