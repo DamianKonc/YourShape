@@ -1,5 +1,4 @@
 import React from "react";
-import { db } from "../dataBase/firebase";
 
 import SignUp from "./signup/SignUp";
 import Dashboard from "./dashboard/Dashboard";

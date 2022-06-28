@@ -10,20 +10,23 @@ import { collection, getDocs, where, query } from "firebase/firestore";
 export default function Workout() {
   const [exTypesArr, setExTypeArr] = useState([]);
   const [arr, setArr] = useState([]);
-  const [number, setNumber] = useState(1);
+  const SelectValue = useRef("4");
 
   async function getTypeEx(db) {
     const q = query(collection(db, "Type"));
     const exTypes = await getDocs(q);
     exTypes.forEach((doc) => {
-      setExTypeArr((prev) => [...prev, doc.data().Name]);
+      setExTypeArr((prev) => [
+        ...prev,
+        { Name: doc.data().Name, ID: doc.data().ID },
+      ]);
     });
   }
 
   async function getExcercises(db) {
     const q = query(
       collection(db, "Excercises"),
-      where("TypeID", "==", `${number}`)
+      where("TypeID", "==", `${SelectValue.current}`)
     );
     const excercises = await getDocs(q);
     excercises.forEach((doc) => {
@@ -36,9 +39,10 @@ export default function Workout() {
     getTypeEx(db);
   }, []);
 
-  //REFERENCJE ZROB UseRef
   const showEx = (e) => {
-    console.log(number);
+    SelectValue.current = e.target.options[e.target.selectedIndex].dataset.id;
+    console.log(SelectValue);
+    e.preventDefault();
     setArr([]);
     getExcercises(db);
   };
@@ -48,7 +52,9 @@ export default function Workout() {
       <Logo />
       <select onChange={showEx}>
         {exTypesArr.map((el, id) => (
-          <option key={id}> {el}</option>
+          <option data-id={el.ID} key={id}>
+            {el.Name}
+          </option>
         ))}
       </select>
       <List>
