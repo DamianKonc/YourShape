@@ -3,14 +3,23 @@ import React from "react";
 import List from "../List/List";
 import ListElement from "../listElement/ListElement";
 import Logo from "../logo/Logo";
-import { db } from "../../dataBase/firebase";
+import { db, storage } from "../../dataBase/firebase";
 import { useState, useEffect, useRef } from "react";
 import { collection, getDocs, where, query } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+
+import "./workout.scss";
 
 export default function Workout() {
   const [exTypesArr, setExTypeArr] = useState([]);
   const [arr, setArr] = useState([]);
   const SelectValue = useRef("4");
+  const BodyPartName = useRef("Stomach");
+  const [manyPaths, setManyPaths] = useState([]);
+
+  console.log("test");
+
+  // getImages(BodyPartName);
 
   async function getTypeEx(db) {
     const q = query(collection(db, "Type"));
@@ -34,18 +43,32 @@ export default function Workout() {
     });
   }
 
+  async function getImages(BodyPartName) {
+    arr.map(async (el) =>
+      getDownloadURL(ref(storage, `${BodyPartName.current}/${el}.jpg`)).then(
+        (url) => {
+          setManyPaths((prev) => [...prev, `${url} `]);
+        }
+      )
+    );
+  }
+
+  const showEx = (e) => {
+    SelectValue.current = e.target.options[e.target.selectedIndex].dataset.id;
+    BodyPartName.current = e.target.value;
+    setArr([]);
+    getExcercises(db);
+  };
+
   useEffect(() => {
     getExcercises(db);
     getTypeEx(db);
   }, []);
 
-  const showEx = (e) => {
-    SelectValue.current = e.target.options[e.target.selectedIndex].dataset.id;
-    console.log(SelectValue);
-    e.preventDefault();
-    setArr([]);
-    getExcercises(db);
-  };
+  useEffect(() => {
+    getImages(BodyPartName);
+    console.log(arr);
+  }, [arr]);
 
   return (
     <>
@@ -60,6 +83,7 @@ export default function Workout() {
       <List>
         {arr.map((el, id) => (
           <ListElement key={id}>
+            <img alt={el} className="workout-img" src={manyPaths[id]} />
             <p className="chest-paragraph">{el}</p>
           </ListElement>
         ))}

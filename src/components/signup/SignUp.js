@@ -2,12 +2,16 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { auth, db } from "../../dataBase/firebase";
 import "./signup.scss";
 
 const SignUp = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
+  const nameRef = useRef();
+  const birthDayRef = useRef();
   const { signup } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,6 +32,15 @@ const SignUp = () => {
     } catch {
       setError("failed to create an account");
     }
+
+    await addDoc(collection(db, "users"), {
+      name: `${nameRef.current.value}`,
+      birthDate: `${birthDayRef.current.value}`,
+      email: `${emailRef.current.value}`,
+      isAdmin: false,
+    })
+      .document()
+      .collection("workout");
     setLoading(false);
   }
 
@@ -37,6 +50,27 @@ const SignUp = () => {
       {error && <div>{error}</div>}
       <form className="signup__form" onSubmit={handleSubmit}>
         <label className="signup__form-el">
+          Name
+          <input
+            className="signup__form-el-input"
+            id="name"
+            ref={nameRef}
+            required
+            placeholder="name"
+          />
+        </label>
+        <label className="signup__form-el">
+          Birth Date
+          <input
+            type="date"
+            className="signup__form-el-input"
+            id="bdate"
+            ref={birthDayRef}
+            required
+            placeholder="Birthday date"
+          />
+        </label>
+        <label className="signup__form-el">
           Email
           <input
             className="signup__form-el-input"
@@ -44,6 +78,7 @@ const SignUp = () => {
             ref={emailRef}
             required
             placeholder="Email"
+            type="email"
           />
         </label>
         <label className="signup__form-el">
