@@ -2,9 +2,10 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { collection, addDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../dataBase/firebase";
 import "./signup.scss";
+import { updateCurrentUser } from "firebase/auth";
 
 const SignUp = () => {
   const emailRef = useRef();

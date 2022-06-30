@@ -7,6 +7,7 @@ import { db, storage } from "../../dataBase/firebase";
 import { useState, useEffect, useRef } from "react";
 import { collection, getDocs, where, query } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
+import { Link } from "react-router-dom";
 
 import "./workout.scss";
 
@@ -16,6 +17,7 @@ export default function Workout() {
   const SelectValue = useRef("4");
   const BodyPartName = useRef("Stomach");
   const [manyPaths, setManyPaths] = useState([]);
+  // const pathsRefs = useRef([]);
 
   console.log("test");
 
@@ -44,9 +46,10 @@ export default function Workout() {
   }
 
   async function getImages(BodyPartName) {
-    arr.map(async (el) =>
+    arr.map((el) =>
       getDownloadURL(ref(storage, `${BodyPartName.current}/${el}.jpg`)).then(
         (url) => {
+          // pathsRefs.current[i] = `${url} `;
           setManyPaths((prev) => [...prev, `${url} `]);
         }
       )
@@ -56,19 +59,24 @@ export default function Workout() {
   const showEx = (e) => {
     SelectValue.current = e.target.options[e.target.selectedIndex].dataset.id;
     BodyPartName.current = e.target.value;
+    setManyPaths([]);
     setArr([]);
     getExcercises(db);
+    // pathsRefs.current = pathsRefs.current.slice(0, 5);
+    getImages(BodyPartName);
   };
 
   useEffect(() => {
-    getExcercises(db);
-    getTypeEx(db);
-  }, []);
-
-  useEffect(() => {
-    getImages(BodyPartName);
+    console.log(manyPaths);
     console.log(arr);
-  }, [arr]);
+    setExTypeArr([]);
+    setArr([]);
+    getExcercises(db);
+
+    getTypeEx(db);
+    // pathsRefs.current = pathsRefs.current.slice(0, 5);
+    getImages(BodyPartName);
+  }, []);
 
   return (
     <>
@@ -83,8 +91,10 @@ export default function Workout() {
       <List>
         {arr.map((el, id) => (
           <ListElement key={id}>
-            <img alt={el} className="workout-img" src={manyPaths[id]} />
-            <p className="chest-paragraph">{el}</p>
+            <Link className="workout-link-element" to={el}>
+              <img alt={el} className="workout-img" src={manyPaths[id]} />
+              <p className="chest-paragraph">{el}</p>
+            </Link>
           </ListElement>
         ))}
       </List>
