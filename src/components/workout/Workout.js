@@ -45,15 +45,21 @@ export default function Workout() {
     });
   }
 
+  const delay = () => new Promise((resolve) => setTimeout(resolve, 10));
+
+  const showImgs = async (BodyPartName, el) => {
+    await delay();
+    return getDownloadURL(
+      ref(storage, `${BodyPartName.current}/${el}.jpg`)
+    ).then((url) => {
+      // pathsRefs.current[i] = `${url} `;
+      setManyPaths((prev) => [...prev, `${url} `]);
+    });
+  };
+
   async function getImages(BodyPartName) {
-    arr.map((el) =>
-      getDownloadURL(ref(storage, `${BodyPartName.current}/${el}.jpg`)).then(
-        (url) => {
-          // pathsRefs.current[i] = `${url} `;
-          setManyPaths((prev) => [...prev, `${url} `]);
-        }
-      )
-    );
+    const unresolvedPromises = arr.map((el) => showImgs(BodyPartName, el));
+    await Promise.all(unresolvedPromises);
   }
 
   const showEx = (e) => {
@@ -62,9 +68,11 @@ export default function Workout() {
     setManyPaths([]);
     setArr([]);
     getExcercises(db);
-    // pathsRefs.current = pathsRefs.current.slice(0, 5);
-    getImages(BodyPartName);
   };
+
+  useEffect(() => {
+    getImages(BodyPartName);
+  }, [arr]);
 
   useEffect(() => {
     console.log(manyPaths);
