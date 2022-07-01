@@ -3,11 +3,12 @@ import React from "react";
 import List from "../List/List";
 import ListElement from "../listElement/ListElement";
 import Logo from "../logo/Logo";
+import Modal from "../modal/Modal";
+
 import { db, storage } from "../../dataBase/firebase";
 import { useState, useEffect, useRef } from "react";
 import { collection, getDocs, where, query } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
-import { Link } from "react-router-dom";
 
 import "./workout.scss";
 
@@ -17,6 +18,7 @@ export default function Workout() {
   const SelectValue = useRef("4");
   const BodyPartName = useRef("Stomach");
   const [manyPaths, setManyPaths] = useState([]);
+  const [display, setDisplay] = useState("none");
   // const pathsRefs = useRef([]);
 
   console.log("test");
@@ -45,7 +47,7 @@ export default function Workout() {
     });
   }
 
-  const delay = () => new Promise((resolve) => setTimeout(resolve, 10));
+  const delay = () => new Promise((resolve) => setTimeout(resolve, 1));
 
   const showImgs = async (BodyPartName, el) => {
     await delay();
@@ -65,26 +67,34 @@ export default function Workout() {
   const showEx = (e) => {
     SelectValue.current = e.target.options[e.target.selectedIndex].dataset.id;
     BodyPartName.current = e.target.value;
-    setManyPaths([]);
+
     setArr([]);
     getExcercises(db);
   };
 
   useEffect(() => {
+    setManyPaths([]);
     getImages(BodyPartName);
   }, [arr]);
 
   useEffect(() => {
-    console.log(manyPaths);
-    console.log(arr);
+    setManyPaths([]);
     setExTypeArr([]);
     setArr([]);
     getExcercises(db);
 
     getTypeEx(db);
-    // pathsRefs.current = pathsRefs.current.slice(0, 5);
     getImages(BodyPartName);
   }, []);
+
+  const handleClick = (el) => {
+    const withoutSpaces = el.replaceAll(" ", "");
+    setDisplay("flex");
+  };
+
+  const handleClose = () => {
+    setDisplay("none");
+  };
 
   return (
     <>
@@ -99,13 +109,20 @@ export default function Workout() {
       <List>
         {arr.map((el, id) => (
           <ListElement key={id}>
-            <Link className="workout-link-element" to={el}>
-              <img alt={el} className="workout-img" src={manyPaths[id]} />
-              <p className="chest-paragraph">{el}</p>
-            </Link>
+            <img alt={el} className="workout-img" src={manyPaths[id]} />
+            <p className="chest-paragraph">{el}</p>
+            <button onClick={() => handleClick(el)}>Add series</button>
           </ListElement>
         ))}
       </List>
+      <div
+        style={{ display: display }}
+        onClick={handleClose}
+        className="closeModal"
+      >
+        X
+      </div>
+      <Modal isShowed={display} />
     </>
   );
 }
