@@ -5,7 +5,6 @@ import Logo from "../logo/Logo";
 import { collection, addDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../dataBase/firebase";
 import "./signup.scss";
-import { updateCurrentUser } from "firebase/auth";
 
 const SignUp = () => {
   const emailRef = useRef();
@@ -109,10 +108,10 @@ const SignUp = () => {
         </button>
       </form>
       <div>
-        Allready have an account?{" "}
+        Allready have an account?
         <Link className="link-element" to="/">
           Log In
-        </Link>{" "}
+        </Link>
       </div>
     </>
   );

@@ -92,7 +92,7 @@ const UpdateProfile = () => {
         </button>
       </form>
       <div>
-        <Link className="link-element" to="/">
+        <Link className="link-element" to="/dashboard">
           Cancel
         </Link>{" "}
       </div>

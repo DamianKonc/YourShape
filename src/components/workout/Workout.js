@@ -5,10 +5,19 @@ import ListElement from "../listElement/ListElement";
 import Logo from "../logo/Logo";
 import Modal from "../modal/Modal";
 
+import { useNavigate } from "react-router-dom";
 import { db, storage } from "../../dataBase/firebase";
 import { useState, useEffect, useRef } from "react";
-import { collection, getDocs, where, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  where,
+  query,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
+import { auth } from "../../dataBase/firebase";
 
 import "./workout.scss";
 
@@ -19,11 +28,11 @@ export default function Workout() {
   const BodyPartName = useRef("Stomach");
   const [manyPaths, setManyPaths] = useState([]);
   const [display, setDisplay] = useState("none");
-  // const pathsRefs = useRef([]);
+  const [idDoc, setIdDoc] = useState("s");
 
-  console.log("test");
+  const [dataFromdb, setDataFromDB] = useState({});
 
-  // getImages(BodyPartName);
+  let navigate = useNavigate();
 
   async function getTypeEx(db) {
     const q = query(collection(db, "Type"));
@@ -88,12 +97,33 @@ export default function Workout() {
   }, []);
 
   const handleClick = (el) => {
-    const withoutSpaces = el.replaceAll(" ", "");
+    someFunction();
+    setIdDoc(el.replaceAll(" ", ""));
     setDisplay("flex");
   };
 
   const handleClose = () => {
     setDisplay("none");
+  };
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const docRef = doc(
+    db,
+    "users",
+    auth.currentUser.uid,
+    BodyPartName.current,
+    idDoc
+  );
+  const someFunction = async () => {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setDataFromDB(() => [docSnap.data()]);
+    } else {
+      console.log("No such document!");
+    }
   };
 
   return (
@@ -106,6 +136,14 @@ export default function Workout() {
           </option>
         ))}
       </select>
+      <div
+        style={{ display: display }}
+        onClick={handleClose}
+        className="closeModal"
+      >
+        X
+      </div>
+      <Modal idDoc={idDoc} bodyPart={BodyPartName.current} isShowed={display} />
       <List>
         {arr.map((el, id) => (
           <ListElement key={id}>
@@ -115,14 +153,7 @@ export default function Workout() {
           </ListElement>
         ))}
       </List>
-      <div
-        style={{ display: display }}
-        onClick={handleClose}
-        className="closeModal"
-      >
-        X
-      </div>
-      <Modal isShowed={display} />
+      <button onClick={handleBack}>Go Back</button>
     </>
   );
 }

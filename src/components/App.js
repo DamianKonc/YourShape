@@ -24,7 +24,6 @@ function App() {
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/dashboard/workout" element={<Workout />} />
             <Route path="/dashboard/yourresults" element={<YourResults />} />
-            <Route path="/dashboard/workout/Alternating elbow to knee krunch" />
           </Routes>
         </AuthProvider>
       </Router>
