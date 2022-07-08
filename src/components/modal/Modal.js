@@ -52,9 +52,9 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
   const someFunction = async () => {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      const wrapped = JSON.parse(JSON.stringify(docSnap.data()));
       setDataFromDB([]);
-      setDataFromDB(wrapped);
+      const all = docSnap.data();
+      console.log({ ...all });
     } else {
       console.log("No such document");
     }
@@ -103,7 +103,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
         </label>
         <button>Add series</button>
       </form>
-      <div>{dataFromdb && <div>Serie: {dataFromdb[1]}</div>}</div>
+      <div>{dataFromdb && <div>Serie: {dataFromdb}</div>}</div>
     </div>
   );
 }
