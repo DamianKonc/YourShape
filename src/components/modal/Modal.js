@@ -2,7 +2,17 @@ import React, { useEffect } from "react";
 import "./modal.scss";
 import Logo from "../logo/Logo";
 import { useState, useRef } from "react";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  Timestamp,
+  getDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  collectionGroup,
+} from "firebase/firestore";
 import { db } from "../../dataBase/firebase";
 import { auth } from "../../dataBase/firebase";
 import { uuidv4 } from "@firebase/util";
@@ -11,17 +21,15 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
   const reps = useRef(0);
   const weight = useRef(0);
   const [serie, setSerie] = useState({
-    date: "1",
-    reps: "1",
-    weight: "1",
+    date: "",
+    reps: "",
+    weight: "",
   });
-  const [newId, setNewId] = useState(0);
-  const [dataFromdb, setDataFromDB] = useState({});
+  const [dataFromdb, setDataFromDB] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setNewId(2);
     setSerie(() => ({
       date: Timestamp.fromDate(new Date()),
       reps: parseInt(reps.current.value),
@@ -40,6 +48,27 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
       }
     );
   };
+
+  const someFunction = async () => {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const wrapped = JSON.parse(JSON.stringify(docSnap.data()));
+      setDataFromDB([]);
+      setDataFromDB(wrapped);
+    } else {
+      console.log("No such document");
+    }
+
+    console.log(dataFromdb);
+    // console.log(isShowed);
+    // console.log(bodyPart);
+    // console.log(idDoc);
+  };
+  // dataFromdb.map((el) => console.log(el.weight));
+
+  useEffect(() => {
+    someFunction();
+  }, [idDoc]);
 
   useEffect(() => {
     sendInfos(id);

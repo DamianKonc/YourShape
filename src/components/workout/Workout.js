@@ -8,14 +8,7 @@ import Modal from "../modal/Modal";
 import { useNavigate } from "react-router-dom";
 import { db, storage } from "../../dataBase/firebase";
 import { useState, useEffect, useRef } from "react";
-import {
-  collection,
-  getDocs,
-  where,
-  query,
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, getDocs, where, query, doc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { auth } from "../../dataBase/firebase";
 
@@ -29,8 +22,6 @@ export default function Workout() {
   const [manyPaths, setManyPaths] = useState([]);
   const [display, setDisplay] = useState("none");
   const [idDoc, setIdDoc] = useState("s");
-
-  const [dataFromdb, setDataFromDB] = useState({});
 
   let navigate = useNavigate();
 
@@ -97,7 +88,6 @@ export default function Workout() {
   }, []);
 
   const handleClick = (el) => {
-    someFunction();
     setIdDoc(el.replaceAll(" ", ""));
     setDisplay("flex");
   };
@@ -115,16 +105,8 @@ export default function Workout() {
     "users",
     auth.currentUser.uid,
     BodyPartName.current,
-    idDoc
+    idDoc.replaceAll(" ", "")
   );
-  const someFunction = async () => {
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      setDataFromDB(() => [docSnap.data()]);
-    } else {
-      console.log("No such document!");
-    }
-  };
 
   return (
     <>
