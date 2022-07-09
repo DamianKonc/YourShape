@@ -10,7 +10,6 @@ import { db, storage } from "../../dataBase/firebase";
 import { useState, useEffect, useRef } from "react";
 import { collection, getDocs, where, query, doc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
-import { auth } from "../../dataBase/firebase";
 
 import "./workout.scss";
 
@@ -54,7 +53,7 @@ export default function Workout() {
     return getDownloadURL(
       ref(storage, `${BodyPartName.current}/${el}.jpg`)
     ).then((url) => {
-      // pathsRefs.current[i] = `${url} `;
+      setManyPaths([]);
       setManyPaths((prev) => [...prev, `${url} `]);
     });
   };
@@ -100,14 +99,6 @@ export default function Workout() {
     navigate(-1);
   };
 
-  const docRef = doc(
-    db,
-    "users",
-    auth.currentUser.uid,
-    BodyPartName.current,
-    idDoc.replaceAll(" ", "")
-  );
-
   return (
     <>
       <Logo />
@@ -129,7 +120,13 @@ export default function Workout() {
       <List>
         {arr.map((el, id) => (
           <ListElement key={id}>
-            <img alt={el} className="workout-img" src={manyPaths[id]} />
+            <img
+              alt={el}
+              className="workout-img"
+              src={manyPaths.forEach((item) =>
+                item.includes(el) ? console.log(item) : console.log(el)
+              )}
+            />
             <p className="chest-paragraph">{el}</p>
             <button onClick={() => handleClick(el)}>Add series</button>
           </ListElement>

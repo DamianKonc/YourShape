@@ -51,9 +51,10 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
   );
 
   useEffect(() => {
-    onSnapshot(q, (querySnapshot) => {
+    const subscribe = onSnapshot(q, (querySnapshot) => {
       setDataFromDB([]);
       querySnapshot.forEach((doc) => {
+        console.log(doc.data().reps);
         setDataFromDB((prev) => [
           {
             reps: doc.data().reps,
@@ -64,6 +65,8 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
         ]);
       });
     });
+
+    return subscribe;
   }, [idDoc]);
 
   return (
