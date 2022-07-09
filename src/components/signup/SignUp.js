@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
-import { collection, addDoc, setDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../dataBase/firebase";
 import "./signup.scss";
 
@@ -33,7 +33,14 @@ const SignUp = () => {
       setError("failed to create an account");
     }
 
-    await addDoc(collection(db, "users"), {
+    // await setDoc(collection(db, "users"), auth.currentUser.uid, {
+    //   name: `${nameRef.current.value}`,
+    //   birthDate: `${birthDayRef.current.value}`,
+    //   email: `${emailRef.current.value}`,
+    //   isAdmin: false,
+    // })
+
+    await setDoc(doc(db, "users", auth.currentUser.uid), {
       name: `${nameRef.current.value}`,
       birthDate: `${birthDayRef.current.value}`,
       email: `${emailRef.current.value}`,

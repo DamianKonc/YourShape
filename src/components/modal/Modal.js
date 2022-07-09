@@ -3,24 +3,21 @@ import "./modal.scss";
 import Logo from "../logo/Logo";
 import { useState, useRef } from "react";
 import {
-  doc,
-  setDoc,
   Timestamp,
-  getDoc,
   collection,
-  getDocs,
   query,
   where,
-  collectionGroup,
+  addDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../dataBase/firebase";
 import { auth } from "../../dataBase/firebase";
-import { uuidv4 } from "@firebase/util";
 
 export default function Modal({ isShowed, bodyPart, idDoc }) {
   const reps = useRef(0);
   const weight = useRef(0);
   const [serie, setSerie] = useState({
+    workoutName: "",
     date: "",
     reps: "",
     weight: "",
@@ -31,48 +28,43 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
     e.preventDefault();
 
     setSerie(() => ({
+      workoutName: idDoc,
       date: Timestamp.fromDate(new Date()),
       reps: parseInt(reps.current.value),
       weight: parseInt(weight.current.value),
     }));
   };
-  const docRef = doc(db, "users", auth.currentUser.uid, bodyPart, idDoc);
-
-  const id = uuidv4();
-  const sendInfos = (id) => {
-    setDoc(
-      docRef,
-      { [id]: serie },
-      {
-        merge: true,
-      }
-    );
-  };
-
-  const someFunction = async () => {
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      setDataFromDB([]);
-      const all = docSnap.data();
-      console.log({ ...all });
-    } else {
-      console.log("No such document");
-    }
-
-    console.log(dataFromdb);
-    // console.log(isShowed);
-    // console.log(bodyPart);
-    // console.log(idDoc);
-  };
-  // dataFromdb.map((el) => console.log(el.weight));
+  // const docRef = collection(db, "users", auth.currentUser.uid, bodyPart);
 
   useEffect(() => {
-    someFunction();
-  }, [idDoc]);
-
-  useEffect(() => {
-    sendInfos(id);
+    addDoc(collection(db, "users", auth.currentUser.uid, bodyPart), {
+      workoutName: idDoc,
+      date: Timestamp.fromDate(new Date()),
+      reps: parseInt(reps.current.value),
+      weight: parseInt(weight.current.value),
+    });
   }, [serie]);
+
+  const q = query(
+    collection(db, "users", auth.currentUser.uid, bodyPart),
+    where("workoutName", "==", idDoc)
+  );
+
+  useEffect(() => {
+    onSnapshot(q, (querySnapshot) => {
+      setDataFromDB([]);
+      querySnapshot.forEach((doc) => {
+        setDataFromDB((prev) => [
+          {
+            reps: doc.data().reps,
+            weight: doc.data().weight,
+            date: doc.data().date.toDate().toDateString(),
+          },
+          ...prev,
+        ]);
+      });
+    });
+  }, [idDoc]);
 
   return (
     <div className="modal" style={{ display: isShowed }}>
@@ -103,7 +95,24 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
         </label>
         <button>Add series</button>
       </form>
-      <div>{dataFromdb && <div>Serie: {dataFromdb}</div>}</div>
+      <div> Workout</div>
+      <div className="modal__dataStorage">
+        {dataFromdb &&
+          dataFromdb.map((el, id) => (
+            <div key={id} className="modal-div">
+              <span className="modal-span">
+                <p>Date:</p> {el.date}
+              </span>
+              <span className="modal-span">
+                <p>Reps:</p> {el.reps}
+              </span>
+              <span className="modal-span">
+                <p>Weights:</p> {el.weight}
+              </span>
+              <button>Change</button>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

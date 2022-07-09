@@ -10,3 +10,22 @@
   color: white;
   font-size: 20px;
 }
+
+.modal__dataStorage {
+  overflow-y: scroll;
+  max-height: 40%;
+  min-width: 50%;
+  border: 1px solid white;
+}
+
+.modal-div {
+  margin: 10px;
+  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-span {
+  margin: 30px 20px;
+}
