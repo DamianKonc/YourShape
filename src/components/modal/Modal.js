@@ -9,6 +9,7 @@ import {
   where,
   addDoc,
   onSnapshot,
+  limit,
 } from "firebase/firestore";
 import { db } from "../../dataBase/firebase";
 import { auth } from "../../dataBase/firebase";
@@ -16,39 +17,28 @@ import { auth } from "../../dataBase/firebase";
 export default function Modal({ isShowed, bodyPart, idDoc }) {
   const reps = useRef(0);
   const weight = useRef(0);
-  const [serie, setSerie] = useState({
-    workoutName: "",
-    date: "",
-    reps: "",
-    weight: "",
-  });
+
   const [dataFromdb, setDataFromDB] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setSerie(() => ({
-      workoutName: idDoc,
-      date: Timestamp.fromDate(new Date()),
-      reps: parseInt(reps.current.value),
-      weight: parseInt(weight.current.value),
-    }));
-  };
-  // const docRef = collection(db, "users", auth.currentUser.uid, bodyPart);
-
-  useEffect(() => {
     addDoc(collection(db, "users", auth.currentUser.uid, bodyPart), {
       workoutName: idDoc,
       date: Timestamp.fromDate(new Date()),
       reps: parseInt(reps.current.value),
       weight: parseInt(weight.current.value),
+      volume: parseInt(reps.current.value) * parseInt(weight.current.value),
     });
-  }, [serie]);
+  };
 
   const q = query(
     collection(db, "users", auth.currentUser.uid, bodyPart),
-    where("workoutName", "==", idDoc)
+    where("workoutName", "==", idDoc),
+    limit(6)
   );
+
+  // ss///
 
   useEffect(() => {
     const subscribe = onSnapshot(q, (querySnapshot) => {
@@ -59,6 +49,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
             reps: doc.data().reps,
             weight: doc.data().weight,
             date: doc.data().date.toDate().toDateString(),
+            volume: doc.data().volume,
           },
           ...prev,
         ]);
@@ -110,6 +101,9 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
               </span>
               <span className="modal-span">
                 <p>Weights:</p> {el.weight}
+              </span>
+              <span className="modal-span">
+                <p>Volume:</p> {el.volume}
               </span>
               <button>Change</button>
             </div>
