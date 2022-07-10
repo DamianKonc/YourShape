@@ -15,7 +15,7 @@ import "./workout.scss";
 
 export default function Workout() {
   const [exTypesArr, setExTypeArr] = useState([]);
-  const [arr, setArr] = useState([]);
+  const [exNameArr, setexNameArr] = useState([]);
   const SelectValue = useRef("4");
   const BodyPartName = useRef("Stomach");
   const [manyPaths, setManyPaths] = useState([]);
@@ -35,6 +35,8 @@ export default function Workout() {
       ]);
     });
   }
+  console.log(manyPaths);
+  // console.log(exNameArr);
 
   async function getExcercises(db) {
     const q = query(
@@ -42,44 +44,44 @@ export default function Workout() {
       where("TypeID", "==", `${SelectValue.current}`)
     );
     const excercises = await getDocs(q);
-    setArr([]);
+    setexNameArr([]);
     excercises.forEach((doc) => {
-      setArr((prev) => [...prev, doc.data().Name]);
+      setexNameArr((prev) => [...prev, doc.data().Name]);
     });
   }
 
   const delay = () => new Promise((resolve) => setTimeout(resolve, 1));
 
   const showImgs = async (BodyPartName, el) => {
+    setManyPaths([]);
     await delay();
     return getDownloadURL(
       ref(storage, `${BodyPartName.current}/${el.replaceAll(" ", "")}.jpg`)
     ).then((url) => {
-      setManyPaths([]);
       setManyPaths((prev) => [...prev, `${url} `]);
     });
   };
 
   async function getImages(BodyPartName) {
-    const unresolvedPromises = arr.map((el) => showImgs(BodyPartName, el));
+    const unresolvedPromises = exNameArr.map((el) =>
+      showImgs(BodyPartName, el)
+    );
     await Promise.all(unresolvedPromises);
   }
 
   const showEx = (e) => {
     SelectValue.current = e.target.options[e.target.selectedIndex].dataset.id;
     BodyPartName.current = e.target.value;
-
     getExcercises(db);
   };
 
   useEffect(() => {
     getImages(BodyPartName);
-  }, [arr]);
+  }, [exNameArr]);
 
   useEffect(() => {
     getExcercises(db);
     getTypeEx(db);
-    getImages(BodyPartName);
   }, []);
 
   const handleClick = (el) => {
@@ -114,32 +116,14 @@ export default function Workout() {
       </div>
       <Modal idDoc={idDoc} bodyPart={BodyPartName.current} isShowed={display} />
       <List>
-        {arr.map((el, id) => (
+        {exNameArr.map((el, id) => (
           <ListElement key={id}>
             {manyPaths.map((item, id) =>
               item.includes(el.replaceAll(" ", "")) ? (
                 <img alt={el} key={id} className="workout-img" src={item} />
-              ) : (
-                console.log(el.replaceAll(" ", ""))
-              )
+              ) : null
             )}
-            {/* <img
-              alt={el}
-              className="workout-img"
-              // src={manyPaths.forEach(
-              //   (item) => {
-              //     if (item.includes(el)) {
-              //       console.log(item);
-              //       return item;
-              //     }
-              //   }
-              // )}
-              {...manyPaths.forEach((item) => {
-                item.includes(el.replaceAll(" ", ""))
-                  ? console.log(item)
-                  : console.log("nie pasuje");
-              })}
-            /> */}
+
             <p className="chest-paragraph">{el}</p>
             <button onClick={() => handleClick(el)}>Add series</button>
           </ListElement>

@@ -54,7 +54,6 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
     const subscribe = onSnapshot(q, (querySnapshot) => {
       setDataFromDB([]);
       querySnapshot.forEach((doc) => {
-        console.log(doc.data().reps);
         setDataFromDB((prev) => [
           {
             reps: doc.data().reps,
