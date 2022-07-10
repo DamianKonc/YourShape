@@ -27,6 +27,7 @@ export default function Workout() {
   async function getTypeEx(db) {
     const q = query(collection(db, "Type"));
     const exTypes = await getDocs(q);
+    setExTypeArr([]);
     exTypes.forEach((doc) => {
       setExTypeArr((prev) => [
         ...prev,
@@ -41,6 +42,7 @@ export default function Workout() {
       where("TypeID", "==", `${SelectValue.current}`)
     );
     const excercises = await getDocs(q);
+    setArr([]);
     excercises.forEach((doc) => {
       setArr((prev) => [...prev, doc.data().Name]);
     });
@@ -51,7 +53,7 @@ export default function Workout() {
   const showImgs = async (BodyPartName, el) => {
     await delay();
     return getDownloadURL(
-      ref(storage, `${BodyPartName.current}/${el}.jpg`)
+      ref(storage, `${BodyPartName.current}/${el.replaceAll(" ", "")}.jpg`)
     ).then((url) => {
       setManyPaths([]);
       setManyPaths((prev) => [...prev, `${url} `]);
@@ -67,21 +69,15 @@ export default function Workout() {
     SelectValue.current = e.target.options[e.target.selectedIndex].dataset.id;
     BodyPartName.current = e.target.value;
 
-    setArr([]);
     getExcercises(db);
   };
 
   useEffect(() => {
-    setManyPaths([]);
     getImages(BodyPartName);
   }, [arr]);
 
   useEffect(() => {
-    setManyPaths([]);
-    setExTypeArr([]);
-    setArr([]);
     getExcercises(db);
-
     getTypeEx(db);
     getImages(BodyPartName);
   }, []);
@@ -120,13 +116,30 @@ export default function Workout() {
       <List>
         {arr.map((el, id) => (
           <ListElement key={id}>
-            <img
+            {manyPaths.map((item, id) =>
+              item.includes(el.replaceAll(" ", "")) ? (
+                <img alt={el} key={id} className="workout-img" src={item} />
+              ) : (
+                console.log(el.replaceAll(" ", ""))
+              )
+            )}
+            {/* <img
               alt={el}
               className="workout-img"
-              src={manyPaths.forEach((item) =>
-                item.includes(el) ? console.log(item) : console.log(el)
-              )}
-            />
+              // src={manyPaths.forEach(
+              //   (item) => {
+              //     if (item.includes(el)) {
+              //       console.log(item);
+              //       return item;
+              //     }
+              //   }
+              // )}
+              {...manyPaths.forEach((item) => {
+                item.includes(el.replaceAll(" ", ""))
+                  ? console.log(item)
+                  : console.log("nie pasuje");
+              })}
+            /> */}
             <p className="chest-paragraph">{el}</p>
             <button onClick={() => handleClick(el)}>Add series</button>
           </ListElement>

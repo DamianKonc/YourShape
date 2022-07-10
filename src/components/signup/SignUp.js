@@ -33,13 +33,6 @@ const SignUp = () => {
       setError("failed to create an account");
     }
 
-    // await setDoc(collection(db, "users"), auth.currentUser.uid, {
-    //   name: `${nameRef.current.value}`,
-    //   birthDate: `${birthDayRef.current.value}`,
-    //   email: `${emailRef.current.value}`,
-    //   isAdmin: false,
-    // })
-
     await setDoc(doc(db, "users", auth.currentUser.uid), {
       name: `${nameRef.current.value}`,
       birthDate: `${birthDayRef.current.value}`,
