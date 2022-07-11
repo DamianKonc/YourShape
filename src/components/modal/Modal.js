@@ -10,9 +10,11 @@ import {
   addDoc,
   onSnapshot,
   limit,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../../dataBase/firebase";
 import { auth } from "../../dataBase/firebase";
+import { uuidv4 } from "@firebase/util";
 
 export default function Modal({ isShowed, bodyPart, idDoc }) {
   const reps = useRef(0);
@@ -23,29 +25,34 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
   const handleSubmitWithWeights = (e) => {
     e.preventDefault();
 
-    addDoc(collection(db, "users", auth.currentUser.uid, bodyPart), {
-      workoutName: idDoc,
-      date: Timestamp.fromDate(new Date()),
-      reps: parseInt(reps.current.value),
-      weight: parseInt(weight.current.value),
-      volume: parseInt(reps.current.value) * parseInt(weight.current.value),
-    });
+    addDoc(
+      collection(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID),
+      {
+        workoutName: idDoc,
+        date: Timestamp.fromDate(new Date()),
+        reps: parseInt(reps.current.value),
+        weight: parseInt(weight.current.value),
+        volume: parseInt(reps.current.value) * parseInt(weight.current.value),
+      }
+    );
   };
-
+  const newID = new Date().toDateString();
   const handleSubmitNoWeightEx = (e) => {
     e.preventDefault();
 
-    addDoc(collection(db, "users", auth.currentUser.uid, bodyPart), {
-      workoutName: idDoc,
-      date: Timestamp.fromDate(new Date()),
-      reps: parseInt(reps.current.value),
-    });
+    addDoc(
+      collection(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID),
+      {
+        workoutName: idDoc,
+        date: Timestamp.fromDate(new Date()),
+        reps: parseInt(reps.current.value),
+      }
+    );
   };
 
   const q = query(
-    collection(db, "users", auth.currentUser.uid, bodyPart),
-    where("workoutName", "==", idDoc),
-    limit(6)
+    collection(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID),
+    orderBy("date")
   );
 
   // ss///
@@ -90,7 +97,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
             <button>Add series</button>
           </form>
-          <div> Workout</div>
+          <div>Today Workout</div>
           <div className="modal__dataStorage">
             {dataFromdb &&
               dataFromdb.map((el, id) => (
@@ -135,7 +142,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
             <button>Add series</button>
           </form>
-          <div> Workout</div>
+          <div>Today Workout</div>
           <div className="modal__dataStorage">
             {dataFromdb &&
               dataFromdb.map((el, id) => (
@@ -186,7 +193,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
             <button>Add series</button>
           </form>
-          <div> Workout</div>
+          <div>Today Workout</div>
           <div className="modal__dataStorage">
             {dataFromdb &&
               dataFromdb.map((el, id) => (
