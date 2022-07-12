@@ -36,7 +36,8 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
       }
     );
   };
-  const newID = new Date().toDateString();
+
+  const newID = new Date().getFullYear().toString();
   const handleSubmitNoWeightEx = (e) => {
     e.preventDefault();
 
@@ -54,8 +55,6 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
     collection(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID),
     orderBy("date")
   );
-
-  // ss///
 
   useEffect(() => {
     const subscribe = onSnapshot(q, (querySnapshot) => {
@@ -97,7 +96,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
             <button>Add series</button>
           </form>
-          <div>Today Workout</div>
+          <div>Workout</div>
           <div className="modal__dataStorage">
             {dataFromdb &&
               dataFromdb.map((el, id) => (
@@ -142,7 +141,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
             <button>Add series</button>
           </form>
-          <div>Today Workout</div>
+          <div>Workout</div>
           <div className="modal__dataStorage">
             {dataFromdb &&
               dataFromdb.map((el, id) => (
@@ -193,7 +192,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
             <button>Add series</button>
           </form>
-          <div>Today Workout</div>
+          <div>Workout</div>
           <div className="modal__dataStorage">
             {dataFromdb &&
               dataFromdb.map((el, id) => (
