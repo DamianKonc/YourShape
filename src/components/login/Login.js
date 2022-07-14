@@ -27,7 +27,7 @@ const Login = () => {
   }
 
   return (
-    <>
+    <div className="wrapper">
       {error && <div>{error}</div>}
       <Logo />
       <form className="form" onSubmit={handleSubmit}>
@@ -57,16 +57,18 @@ const Login = () => {
           Log In
         </button>
       </form>
-      <Link className="form__link" to="/forgot-password">
-        Forgot Password?
-      </Link>
-      <div>
-        Need an account?{" "}
-        <Link className="form__link" to="/signup">
-          Sign Up
+      <div className="login__forgot-section">
+        <Link className="form__link" to="/forgot-password">
+          Forgot Password?
         </Link>
+        <div className="login__forgot-section-createAcc">
+          <p className="login__forgot-section-p"> Need an account?</p>
+          <Link className="form__link" to="/signup">
+            Sign Up
+          </Link>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -36,7 +36,7 @@ export default function Dashboard() {
     }
   }
   return (
-    <>
+    <div className="wrapper">
       <Logo></Logo>
       {error && <div>{error}</div>}
       {userName}
@@ -63,6 +63,6 @@ export default function Dashboard() {
           </button>
         </ListElement>
       </List>
-    </>
+    </div>
   );
 }

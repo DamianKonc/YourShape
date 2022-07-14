@@ -98,9 +98,9 @@ export default function Workout() {
   };
 
   return (
-    <>
+    <div className="wrapper">
       <Logo />
-      <select onChange={showEx}>
+      <select className="workout__bodyPart-select" onChange={showEx}>
         {exTypesArr.map((el, id) => (
           <option data-id={el.ID} key={id}>
             {el.Name}
@@ -125,11 +125,18 @@ export default function Workout() {
             )}
 
             <p className="chest-paragraph">{el}</p>
-            <button onClick={() => handleClick(el)}>Add series</button>
+            <button
+              className="workout__btn-add"
+              onClick={() => handleClick(el)}
+            >
+              Add series
+            </button>
           </ListElement>
         ))}
       </List>
-      <button onClick={handleBack}>Go Back</button>
-    </>
+      <button className="workout__btn-goBack" onClick={handleBack}>
+        Go Back
+      </button>
+    </div>
   );
 }

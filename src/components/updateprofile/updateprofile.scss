@@ -1,8 +1,13 @@
+.UpdateProfile__header {
+  font-size: 2rem;
+}
+
 .updateprofile__form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.2rem;
 }
 
 .updateprofile__form-el {
@@ -10,17 +15,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.8rem;
 }
 
 .updateprofile__form-el-input {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   border-radius: 8px;
+  padding: 5px 10px;
 }
 
 .updateprofile__form-btn {
   margin-top: 1rem;
-  font-size: 1.1rem;
+  font-size: 1.6rem;
   padding: 5px 20%;
   border: none;
   border-radius: 10px;
@@ -32,6 +38,7 @@
 }
 
 .link-element {
+  font-size: 1.5rem;
   margin-top: 1rem;
   color: rgb(135, 135, 135);
   text-decoration: none;

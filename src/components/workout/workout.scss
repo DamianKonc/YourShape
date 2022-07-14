@@ -1,11 +1,15 @@
+.workout__bodyPart-select {
+  font-size: 2rem;
+}
+
 .list-el-link {
   text-decoration: none;
   color: white;
 }
 
 .workout-img {
-  width: 100px;
-  height: 100px;
+  width: 8rem;
+  height: 8rem;
   border-radius: 50px;
 }
 
@@ -35,4 +39,22 @@
 
 .closeModal:hover {
   cursor: pointer;
+}
+
+.workout__btn-add {
+  border: none;
+  display: block;
+  padding: 2px 5px;
+  border-radius: 5px;
+  max-width: 22%;
+}
+
+.workout__btn-add:hover {
+  cursor: pointer;
+}
+
+.workout__btn-goBack {
+  font-size: 1.5rem;
+  padding: 5px 10px;
+  border-radius: 10px;
 }

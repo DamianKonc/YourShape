@@ -11,10 +11,13 @@ import {
   onSnapshot,
   limit,
   orderBy,
+  setDoc,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../dataBase/firebase";
 import { auth } from "../../dataBase/firebase";
-import { uuidv4 } from "@firebase/util";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Modal({ isShowed, bodyPart, idDoc }) {
   const reps = useRef(0);
@@ -22,32 +25,46 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
   const [dataFromdb, setDataFromDB] = useState([]);
 
+  const [display, setDisplay] = useState("none");
+  const [itemId, setItemId] = useState(0);
+  const [repsValue, setRepsValue] = useState();
+  const [weightsValues, setWieghtsValues] = useState();
+
   const handleSubmitWithWeights = (e) => {
     e.preventDefault();
+    const docID = uuidv4();
 
-    addDoc(
-      collection(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID),
-      {
-        workoutName: idDoc,
-        date: Timestamp.fromDate(new Date()),
-        reps: parseInt(reps.current.value),
-        weight: parseInt(weight.current.value),
-        volume: parseInt(reps.current.value) * parseInt(weight.current.value),
-      }
+    const data = {
+      workoutName: idDoc,
+      date: Timestamp.fromDate(new Date()),
+      reps: parseInt(reps.current.value),
+      weight: parseInt(weight.current.value),
+      volume: parseInt(reps.current.value) * parseInt(weight.current.value),
+      ID: docID,
+    };
+
+    setDoc(
+      doc(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID, docID),
+      data
     );
   };
 
   const newID = new Date().getFullYear().toString();
   const handleSubmitNoWeightEx = (e) => {
     e.preventDefault();
+    const docID = uuidv4();
 
-    addDoc(
-      collection(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID),
-      {
-        workoutName: idDoc,
-        date: Timestamp.fromDate(new Date()),
-        reps: parseInt(reps.current.value),
-      }
+    const data = {
+      workoutName: idDoc,
+      date: Timestamp.fromDate(new Date()),
+      reps: parseInt(reps.current.value),
+      volume: parseInt(reps.current.value),
+      ID: docID,
+    };
+
+    setDoc(
+      doc(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID, docID),
+      data
     );
   };
 
@@ -66,6 +83,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
             weight: doc.data().weight,
             date: doc.data().date.toDate().toDateString(),
             volume: doc.data().volume,
+            ID: doc.data().ID,
           },
           ...prev,
         ]);
@@ -74,6 +92,69 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
     return subscribe;
   }, [idDoc]);
+
+  const handleChange = (el) => {
+    setDisplay("flex");
+    setRepsValue(el.reps);
+    setItemId(el.ID);
+    console.log(el);
+  };
+
+  const handleChangewithWeights = (el) => {
+    setDisplay("flex");
+    setRepsValue(el.reps);
+    setItemId(el.ID);
+    setWieghtsValues(el.weight);
+    console.log(el);
+  };
+
+  const handleSetRepsValue = (e) => {
+    setRepsValue(e.currentTarget.value);
+  };
+
+  const handleSetWeightsValue = (e) => {
+    setWieghtsValues(e.currentTarget.value);
+    console.log(e.currentTarget.value);
+  };
+
+  const sendChanges = async (e) => {
+    e.preventDefault();
+
+    const updatedDocRef = doc(
+      db,
+      "users",
+      auth.currentUser.uid,
+      bodyPart,
+      idDoc,
+      "2022",
+      itemId
+    );
+
+    await updateDoc(updatedDocRef, {
+      reps: repsValue,
+      volume: repsValue,
+    });
+  };
+
+  const sendChangeswithWeights = async (e) => {
+    e.preventDefault();
+
+    const updatedDocRef = doc(
+      db,
+      "users",
+      auth.currentUser.uid,
+      bodyPart,
+      idDoc,
+      "2022",
+      itemId
+    );
+
+    await updateDoc(updatedDocRef, {
+      reps: repsValue,
+      weight: weightsValues,
+      volume: repsValue * weightsValues,
+    });
+  };
 
   if (bodyPart === "Stomach" && idDoc === "Plank") {
     return (
@@ -85,10 +166,10 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
             <label className="form__label">
               Seconds:
               <input
+                onChange={handleSetRepsValue}
                 className="form__label-input"
                 type="number"
                 id="reps"
-                ref={reps}
                 required
                 placeholder="seconds"
               />
@@ -100,18 +181,46 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
           <div className="modal__dataStorage">
             {dataFromdb &&
               dataFromdb.map((el, id) => (
-                <div key={id} className="modal-div">
-                  <span className="modal-span">
-                    <p>Date:</p> {el.date}
-                  </span>
-                  <span className="modal-span">
-                    <p>Seconds:</p> {el.reps}
-                  </span>
-                  <button>Change</button>
-                </div>
+                <>
+                  <div key={id} className="modal-div">
+                    <span className="modal-span">
+                      <p>Date:</p> {el.date}
+                    </span>
+                    <span className="modal-span">
+                      <p>Seconds:</p> {el.reps}
+                    </span>
+                    <button onClick={() => handleChange(el)}>Change</button>
+                  </div>
+                </>
               ))}
           </div>
         </div>
+        <form className="modal__changeForm" style={{ display: display }}>
+          <label>
+            Reps:
+            <input
+              onChange={handleSetRepsValue}
+              value={repsValue}
+              className="form__label-input"
+              type="number"
+              id="reps"
+              ref={reps}
+              required
+              placeholder="seconds"
+            />
+          </label>
+          <button className="modal__datastorage-btn" onClick={sendChanges}>
+            Submit Changes
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setDisplay("none");
+            }}
+          >
+            X
+          </button>
+        </form>
       </>
     );
   } else if (
@@ -130,6 +239,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
             <label className="form__label">
               Reps:
               <input
+                onChange={handleSetRepsValue}
                 className="form__label-input"
                 type="number"
                 id="reps"
@@ -152,11 +262,42 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
                   <span className="modal-span">
                     <p>Reps:</p> {el.reps}
                   </span>
-                  <button>Change</button>
+                  <button
+                    className="modal__datastorage-btn"
+                    onClick={() => handleChange(el)}
+                  >
+                    Change
+                  </button>
                 </div>
               ))}
           </div>
         </div>
+        <form className="modal__changeForm" style={{ display: display }}>
+          <label>
+            Reps:
+            <input
+              onChange={handleSetRepsValue}
+              value={repsValue}
+              className="form__label-input"
+              type="number"
+              id="reps"
+              ref={reps}
+              required
+              placeholder="seconds"
+            />
+          </label>
+          <button className="modal__datastorage-btn" onClick={sendChanges}>
+            Submit Changes
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setDisplay("none");
+            }}
+          >
+            X
+          </button>
+        </form>
       </>
     );
   } else {
@@ -169,21 +310,23 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
             <label className="form__label">
               Reps:
               <input
+                onChange={handleSetRepsValue}
                 className="form__label-input"
                 type="number"
                 id="reps"
-                ref={reps}
                 required
                 placeholder="reps"
+                value={repsValue}
               />
             </label>
             <label className="form__label">
               Weight:
               <input
+                onChange={handleSetWeightsValue}
+                value={weightsValues}
                 className="form__label-input"
                 type="number"
                 id="weight"
-                ref={weight}
                 required
                 placeholder="weight"
               />
@@ -209,11 +352,58 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
                   <span className="modal-span">
                     <p>Volume:</p> {el.volume} Kg
                   </span>
-                  <button>Change</button>
+                  <button
+                    className="modal__datastorage-btn"
+                    onClick={() => handleChangewithWeights(el)}
+                  >
+                    Change
+                  </button>
                 </div>
               ))}
           </div>
         </div>
+        <form className="modal__changeForm" style={{ display: display }}>
+          <label>
+            Reps:
+            <input
+              onChange={handleSetRepsValue}
+              value={repsValue}
+              className="form__label-input"
+              type="number"
+              id="reps"
+              ref={reps}
+              required
+              placeholder="seconds"
+            />
+          </label>
+          <label>
+            Weights:
+            <input
+              onChange={handleSetWeightsValue}
+              value={weightsValues}
+              className="form__label-input"
+              type="number"
+              id="weight"
+              ref={weight}
+              required
+              placeholder="weight"
+            />
+          </label>
+          <button
+            className="modal__datastorage-btn"
+            onClick={sendChangeswithWeights}
+          >
+            Submit Changes
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setDisplay("none");
+            }}
+          >
+            X
+          </button>
+        </form>
       </>
     );
   }

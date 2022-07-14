@@ -45,9 +45,9 @@ const UpdateProfile = () => {
   }
 
   return (
-    <>
+    <div className="wrapper">
       <Logo />
-      <h2>Update profile</h2>
+      <h2 className="UpdateProfile__header">Update profile</h2>
       {error && <div>{error}</div>}
       <form className="updateprofile__form" onSubmit={handleSubmit}>
         <label className="updateprofile__form-el">
@@ -94,9 +94,9 @@ const UpdateProfile = () => {
       <div>
         <Link className="link-element" to="/dashboard">
           Cancel
-        </Link>{" "}
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
 

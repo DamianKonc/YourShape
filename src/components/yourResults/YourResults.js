@@ -23,6 +23,7 @@ import {
 import { Line } from "react-chartjs-2";
 import { useRef } from "react";
 import { db, auth } from "../../dataBase/firebase";
+import Logo from "../logo/Logo";
 import "./yourResults.scss";
 import _ from "lodash";
 
@@ -51,7 +52,6 @@ export default function YourResults() {
     "Alternating elbow to knee crunch"
   );
   const [wourkoutData, setWorkoutData] = useState([]);
-  const [trainingVolume, setTrainingVolume] = useState(0);
 
   const options = {
     responsive: true,
@@ -65,22 +65,6 @@ export default function YourResults() {
         color: "black",
       },
     },
-  };
-
-  const labels = ["January"];
-
-  let sum = [3311441223];
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Your progres",
-        data: sum,
-        borderColor: "black",
-        backgroundColor: "black",
-      },
-    ],
   };
 
   async function getTypeEx(db) {
@@ -146,6 +130,7 @@ export default function YourResults() {
           data: day + " " + month + " " + year,
           workoutName: doc.data().workoutName,
           reps: doc.data().reps,
+          volume: doc.data().volume,
           groupNumber: parseInt(day + month + year),
         },
       ]);
@@ -153,56 +138,86 @@ export default function YourResults() {
   };
 
   const workoutarr = _.groupBy(wourkoutData, ({ groupNumber }) => groupNumber);
-  console.log(workoutarr);
-  // for (const [key, value] of Object.entries(workoutarr)) {
-  //   console.log(key);
-  //   for (const [key2, value2] of Object.entries(value)) {
-  //     // console.log(`${key2} , ${value2}`);
-  //     for (const [key3, value3] of Object.entries(value2)) {
-  //       // console.log(`${key3} ${value3}`);
-  //       if (key3 === "reps") {
-  //         console.log(value3);
-  //       }
-  //     }
-  //   }
-  // }
 
   const objOfRepsSumm = {};
-  const dateOfWorkout = [];
+  const dateOfWorkout = {};
+  let sum = [];
+  const labels = [];
+
+  // for (const key in workoutarr) {
+  //   objOfRepsSumm[key] = workoutarr[key]
+  //     .map((el) => el.reps)
+  //     .reduce((el1, el2) => el1 + el2);
+  // }
 
   for (const key in workoutarr) {
     objOfRepsSumm[key] = workoutarr[key]
-      .map((el) => el.reps)
+      .map((el) => el.volume)
       .reduce((el1, el2) => el1 + el2);
   }
+
   for (const key in workoutarr) {
     dateOfWorkout[key] = workoutarr[key]
-      .map((el) => el.reps)
-      .reduce((el1, el2) => el1 + el2);
+      .map((el) => el.data)
+      .filter((item, index, array) => array.indexOf(item) === index);
   }
-  console.log(objOfRepsSumm);
+
+  for (const property in dateOfWorkout) {
+    labels.push(dateOfWorkout[property][0]);
+  }
+  for (const property in objOfRepsSumm) {
+    sum.push(objOfRepsSumm[property]);
+  }
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Your progres",
+        data: sum,
+        borderColor: "black",
+        backgroundColor: "black",
+      },
+    ],
+  };
 
   return (
-    <div className="yourResults">
-      <div>
-        <select onChange={showEx}>
-          {exTypesArr.map((el) => (
-            <option data-id={el.ID} key={el.ID}>
-              {el.Name}
-            </option>
-          ))}
-        </select>
-        <select onChange={exNameToDownload}>
-          {exNameArr.map((el, id) => (
-            <option key={id}>{el}</option>
-          ))}
-        </select>
-        <button onClick={() => getStats(docRef)}>Check data</button>
-        <div className="yourresults__chart">
-          <Line options={options} data={data} />
+    <div className="wrapper">
+      <Logo />
+      <div className="yourResults">
+        <div>
+          <div className="yourResults__select">
+            <select className="yourResults__select-el" onChange={showEx}>
+              {exTypesArr.map((el) => (
+                <option data-id={el.ID} key={el.ID}>
+                  {el.Name}
+                </option>
+              ))}
+            </select>
+            <select
+              className="yourResults__select-el"
+              onChange={exNameToDownload}
+            >
+              {exNameArr.map((el, id) => (
+                <option key={id}>{el}</option>
+              ))}
+            </select>
+            <button
+              className="yourResults__select-btn"
+              onClick={() => getStats(docRef)}
+            >
+              Check data
+            </button>
+          </div>
+
+          <div className="yourresults__chart">
+            <Line options={options} data={data} />
+          </div>
         </div>
+        <button className="yourresult__goback" onClick={handleBack}>
+          Go Back
+        </button>
       </div>
-      <button onClick={handleBack}>Go Back</button>
     </div>
   );
 }
