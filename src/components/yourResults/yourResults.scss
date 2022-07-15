@@ -1,5 +1,5 @@
 .yourResults {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: orange;
 }
 
@@ -9,25 +9,24 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  font-size: 2rem;
 }
 
 .yourResults__select-el {
   padding: 5px 10px;
   border-radius: 5px;
+  font-size: 1.5rem;
 }
 
 .yourResults__select-btn {
-  font-size: 1.8rem;
   padding: 2px 5px;
   border-radius: 10px;
 }
 
 .yourresults__chart {
   background-color: white;
+  width: 80vw;
 }
 
 .yourresult__goback {
-  font-size: 1.5rem;
   padding: 5px 10px;
 }

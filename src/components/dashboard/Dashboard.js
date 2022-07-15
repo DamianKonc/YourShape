@@ -39,7 +39,7 @@ export default function Dashboard() {
     <div className="wrapper">
       <Logo></Logo>
       {error && <div>{error}</div>}
-      {userName}
+      <div className="Dashboard__mail">{userName}</div>
       <List>
         <ListElement>
           <Link className="list-el-link" to="/dashboard/workout">

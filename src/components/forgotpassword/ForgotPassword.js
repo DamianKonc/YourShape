@@ -26,7 +26,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <>
+    <div className="wrapper">
       <Logo />
       <h2 className="forgotPassword__header">Reset password</h2>
       {error && <div>{error}</div>}
@@ -54,13 +54,13 @@ const ForgotPassword = () => {
       <Link className="link-element" to="/">
         Login
       </Link>
-      <div>
-        Need an account?{" "}
+      <div className="fortotPassword__signUp">
+        <p className="forgotPassword__createAcc"> Need an account?</p>
         <Link className="link-element" to="/signup">
           Sign Up
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

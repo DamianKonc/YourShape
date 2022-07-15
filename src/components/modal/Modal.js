@@ -6,10 +6,7 @@ import {
   Timestamp,
   collection,
   query,
-  where,
-  addDoc,
   onSnapshot,
-  limit,
   orderBy,
   setDoc,
   doc,
@@ -19,7 +16,12 @@ import { db } from "../../dataBase/firebase";
 import { auth } from "../../dataBase/firebase";
 import { v4 as uuidv4 } from "uuid";
 
-export default function Modal({ isShowed, bodyPart, idDoc }) {
+export default function Modal({
+  currentWorkoutName,
+  isShowed,
+  bodyPart,
+  idDoc,
+}) {
   const reps = useRef(0);
   const weight = useRef(0);
 
@@ -37,9 +39,9 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
     const data = {
       workoutName: idDoc,
       date: Timestamp.fromDate(new Date()),
-      reps: parseInt(reps.current.value),
-      weight: parseInt(weight.current.value),
-      volume: parseInt(reps.current.value) * parseInt(weight.current.value),
+      weight: parseInt(weightsValues),
+      reps: parseInt(repsValue),
+      volume: parseInt(reps.current.value) * parseInt(reps.current.value),
       ID: docID,
     };
 
@@ -47,9 +49,12 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
       doc(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID, docID),
       data
     );
+    setWieghtsValues("");
+    setRepsValue("");
   };
 
   const newID = new Date().getFullYear().toString();
+
   const handleSubmitNoWeightEx = (e) => {
     e.preventDefault();
     const docID = uuidv4();
@@ -57,8 +62,8 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
     const data = {
       workoutName: idDoc,
       date: Timestamp.fromDate(new Date()),
-      reps: parseInt(reps.current.value),
-      volume: parseInt(reps.current.value),
+      reps: parseInt(repsValue),
+      volume: parseInt(repsValue),
       ID: docID,
     };
 
@@ -66,6 +71,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
       doc(db, "users", auth.currentUser.uid, bodyPart, idDoc, newID, docID),
       data
     );
+    setRepsValue("");
   };
 
   const q = query(
@@ -97,7 +103,6 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
     setDisplay("flex");
     setRepsValue(el.reps);
     setItemId(el.ID);
-    console.log(el);
   };
 
   const handleChangewithWeights = (el) => {
@@ -105,7 +110,6 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
     setRepsValue(el.reps);
     setItemId(el.ID);
     setWieghtsValues(el.weight);
-    console.log(el);
   };
 
   const handleSetRepsValue = (e) => {
@@ -114,7 +118,6 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
 
   const handleSetWeightsValue = (e) => {
     setWieghtsValues(e.currentTarget.value);
-    console.log(e.currentTarget.value);
   };
 
   const sendChanges = async (e) => {
@@ -161,15 +164,18 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
       <>
         <div className="modal" style={{ display: isShowed }}>
           <Logo />
+          <h2 className="modal__exName">{currentWorkoutName}</h2>
 
-          <form onSubmit={handleSubmitNoWeightEx}>
+          <form className="modal__form" onSubmit={handleSubmitNoWeightEx}>
             <label className="form__label">
               Seconds:
               <input
+                value={repsValue}
                 onChange={handleSetRepsValue}
                 className="form__label-input"
                 type="number"
                 id="reps"
+                ref={reps}
                 required
                 placeholder="seconds"
               />
@@ -195,32 +201,37 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
               ))}
           </div>
         </div>
-        <form className="modal__changeForm" style={{ display: display }}>
-          <label>
-            Reps:
-            <input
-              onChange={handleSetRepsValue}
-              value={repsValue}
-              className="form__label-input"
-              type="number"
-              id="reps"
-              ref={reps}
-              required
-              placeholder="seconds"
-            />
-          </label>
-          <button className="modal__datastorage-btn" onClick={sendChanges}>
-            Submit Changes
-          </button>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setDisplay("none");
-            }}
-          >
-            X
-          </button>
-        </form>
+        <div className="modal__changeForm" style={{ display: display }}>
+          <div className="wrapper">
+            <div>{currentWorkoutName}</div>
+            <form className="modal__changeForm-form">
+              <label className="modal__changeForm-form-label">
+                Reps:
+                <input
+                  onChange={handleSetRepsValue}
+                  value={repsValue}
+                  className="form__label-input"
+                  type="number"
+                  id="reps"
+                  ref={reps}
+                  required
+                  placeholder="seconds"
+                />
+              </label>
+              <button className="modal__datastorage-btn" onClick={sendChanges}>
+                Submit Changes
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setDisplay("none");
+                }}
+              >
+                Close
+              </button>
+            </form>
+          </div>
+        </div>
       </>
     );
   } else if (
@@ -234,8 +245,8 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
       <>
         <div className="modal" style={{ display: isShowed }}>
           <Logo />
-
-          <form onSubmit={handleSubmitNoWeightEx}>
+          <h2 className="modal__exName">{currentWorkoutName}</h2>
+          <form className="modal__form" onSubmit={handleSubmitNoWeightEx}>
             <label className="form__label">
               Reps:
               <input
@@ -243,7 +254,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
                 className="form__label-input"
                 type="number"
                 id="reps"
-                ref={reps}
+                value={repsValue}
                 required
                 placeholder="reps"
               />
@@ -272,32 +283,37 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
               ))}
           </div>
         </div>
-        <form className="modal__changeForm" style={{ display: display }}>
-          <label>
-            Reps:
-            <input
-              onChange={handleSetRepsValue}
-              value={repsValue}
-              className="form__label-input"
-              type="number"
-              id="reps"
-              ref={reps}
-              required
-              placeholder="seconds"
-            />
-          </label>
-          <button className="modal__datastorage-btn" onClick={sendChanges}>
-            Submit Changes
-          </button>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setDisplay("none");
-            }}
-          >
-            X
-          </button>
-        </form>
+        <div className="modal__changeForm" style={{ display: display }}>
+          <div className="wrapper">
+            <div>{currentWorkoutName}</div>
+            <form className="modal__changeForm-form">
+              <label>
+                Reps:
+                <input
+                  onChange={handleSetRepsValue}
+                  value={repsValue}
+                  className="form__label-input"
+                  type="number"
+                  id="reps"
+                  ref={reps}
+                  required
+                  placeholder="seconds"
+                />
+              </label>
+              <button className="modal__datastorage-btn" onClick={sendChanges}>
+                Submit Changes
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setDisplay("none");
+                }}
+              >
+                Close
+              </button>
+            </form>
+          </div>
+        </div>
       </>
     );
   } else {
@@ -305,7 +321,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
       <>
         <div className="modal" style={{ display: isShowed }}>
           <Logo />
-
+          <h2 className="modal__exName">{currentWorkoutName}</h2>
           <form onSubmit={handleSubmitWithWeights}>
             <label className="form__label">
               Reps:
@@ -316,6 +332,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
                 id="reps"
                 required
                 placeholder="reps"
+                ref={reps}
                 value={repsValue}
               />
             </label>
@@ -327,6 +344,7 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
                 className="form__label-input"
                 type="number"
                 id="weight"
+                ref={weight}
                 required
                 placeholder="weight"
               />
@@ -362,48 +380,53 @@ export default function Modal({ isShowed, bodyPart, idDoc }) {
               ))}
           </div>
         </div>
-        <form className="modal__changeForm" style={{ display: display }}>
-          <label>
-            Reps:
-            <input
-              onChange={handleSetRepsValue}
-              value={repsValue}
-              className="form__label-input"
-              type="number"
-              id="reps"
-              ref={reps}
-              required
-              placeholder="seconds"
-            />
-          </label>
-          <label>
-            Weights:
-            <input
-              onChange={handleSetWeightsValue}
-              value={weightsValues}
-              className="form__label-input"
-              type="number"
-              id="weight"
-              ref={weight}
-              required
-              placeholder="weight"
-            />
-          </label>
-          <button
-            className="modal__datastorage-btn"
-            onClick={sendChangeswithWeights}
-          >
-            Submit Changes
-          </button>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setDisplay("none");
-            }}
-          >
-            X
-          </button>
-        </form>
+        <div className="modal__changeForm" style={{ display: display }}>
+          <div className="wrapper">
+            <div>{currentWorkoutName}</div>
+            <form className="modal__changeForm-form">
+              <label>
+                Reps:
+                <input
+                  onChange={handleSetRepsValue}
+                  value={repsValue}
+                  className="form__label-input"
+                  type="number"
+                  id="reps"
+                  ref={reps}
+                  required
+                  placeholder="seconds"
+                />
+              </label>
+              <label>
+                Weights:
+                <input
+                  onChange={handleSetWeightsValue}
+                  value={weightsValues}
+                  className="form__label-input"
+                  type="number"
+                  id="weight"
+                  ref={weight}
+                  required
+                  placeholder="weight"
+                />
+              </label>
+              <button
+                className="modal__datastorage-btn"
+                onClick={sendChangeswithWeights}
+              >
+                Submit Changes
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setDisplay("none");
+                }}
+              >
+                Close
+              </button>
+            </form>
+          </div>
+        </div>
       </>
     );
   }

@@ -46,7 +46,8 @@
   display: block;
   padding: 2px 5px;
   border-radius: 5px;
-  max-width: 22%;
+  min-width: 22%;
+  max-width: 26%;
 }
 
 .workout__btn-add:hover {

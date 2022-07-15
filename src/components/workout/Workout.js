@@ -21,6 +21,7 @@ export default function Workout() {
   const [manyPaths, setManyPaths] = useState([]);
   const [display, setDisplay] = useState("none");
   const [idDoc, setIdDoc] = useState("s");
+  const [workoutName, setWorkoutName] = useState("");
 
   let navigate = useNavigate();
 
@@ -35,8 +36,6 @@ export default function Workout() {
       ]);
     });
   }
-  console.log(manyPaths);
-  // console.log(exNameArr);
 
   async function getExcercises(db) {
     const q = query(
@@ -85,6 +84,7 @@ export default function Workout() {
   }, []);
 
   const handleClick = (el) => {
+    setWorkoutName(el);
     setIdDoc(el.replaceAll(" ", ""));
     setDisplay("flex");
   };
@@ -114,7 +114,12 @@ export default function Workout() {
       >
         X
       </div>
-      <Modal idDoc={idDoc} bodyPart={BodyPartName.current} isShowed={display} />
+      <Modal
+        currentWorkoutName={workoutName}
+        idDoc={idDoc}
+        bodyPart={BodyPartName.current}
+        isShowed={display}
+      />
       <List>
         {exNameArr.map((el, id) => (
           <ListElement key={id}>
