@@ -16,6 +16,11 @@
   font-size: 20px;
 }
 
+.wrapped {
+  background-color: black;
+  padding: 8rem;
+}
+
 .modal__exName {
   font-size: 2rem;
   margin-bottom: 1.2rem;
@@ -100,4 +105,16 @@
   border: none;
   padding: 2px 5px;
   border-radius: 5px;
+}
+
+.overlay {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.803);
 }

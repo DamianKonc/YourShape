@@ -162,6 +162,8 @@ export default function Modal({
   if (bodyPart === "Stomach" && idDoc === "Plank") {
     return (
       <>
+        <div className="overlay" style={{ display: isShowed }}></div>
+
         <div className="modal" style={{ display: isShowed }}>
           <Logo />
           <h2 className="modal__exName">{currentWorkoutName}</h2>
@@ -175,7 +177,6 @@ export default function Modal({
                 className="form__label-input"
                 type="number"
                 id="reps"
-                ref={reps}
                 required
                 placeholder="seconds"
               />
@@ -200,36 +201,41 @@ export default function Modal({
                 </>
               ))}
           </div>
-        </div>
-        <div className="modal__changeForm" style={{ display: display }}>
-          <div className="wrapper">
-            <div>{currentWorkoutName}</div>
-            <form className="modal__changeForm-form">
-              <label className="modal__changeForm-form-label">
-                Reps:
-                <input
-                  onChange={handleSetRepsValue}
-                  value={repsValue}
-                  className="form__label-input"
-                  type="number"
-                  id="reps"
-                  ref={reps}
-                  required
-                  placeholder="seconds"
-                />
-              </label>
-              <button className="modal__datastorage-btn" onClick={sendChanges}>
-                Submit Changes
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setDisplay("none");
-                }}
-              >
-                Close
-              </button>
-            </form>
+
+          <div className="overlay" style={{ display: display }}></div>
+          <div className="modal__changeForm" style={{ display: display }}>
+            <div className="wrapper">
+              <div>{currentWorkoutName}</div>
+              <form className="modal__changeForm-form">
+                <label className="modal__changeForm-form-label">
+                  Reps:
+                  <input
+                    onChange={handleSetRepsValue}
+                    value={repsValue}
+                    className="form__label-input"
+                    type="number"
+                    id="reps"
+                    ref={reps}
+                    required
+                    placeholder="seconds"
+                  />
+                </label>
+                <button
+                  className="modal__datastorage-btn"
+                  onClick={sendChanges}
+                >
+                  Submit Changes
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setDisplay("none");
+                  }}
+                >
+                  Close
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </>
@@ -243,6 +249,7 @@ export default function Modal({
   ) {
     return (
       <>
+        <div className="overlay" style={{ display: isShowed }}></div>
         <div className="modal" style={{ display: isShowed }}>
           <Logo />
           <h2 className="modal__exName">{currentWorkoutName}</h2>
@@ -283,6 +290,7 @@ export default function Modal({
               ))}
           </div>
         </div>
+        <div className="overlay" style={{ display: display }}></div>
         <div className="modal__changeForm" style={{ display: display }}>
           <div className="wrapper">
             <div>{currentWorkoutName}</div>
@@ -319,6 +327,7 @@ export default function Modal({
   } else {
     return (
       <>
+        <div className="overlay" style={{ display: isShowed }}></div>
         <div className="modal" style={{ display: isShowed }}>
           <Logo />
           <h2 className="modal__exName">{currentWorkoutName}</h2>
@@ -380,6 +389,7 @@ export default function Modal({
               ))}
           </div>
         </div>
+        <div className="overlay" style={{ display: display }}></div>
         <div className="modal__changeForm" style={{ display: display }}>
           <div className="wrapper">
             <div>{currentWorkoutName}</div>
