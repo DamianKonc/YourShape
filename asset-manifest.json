@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/yourshape/static/css/main.c08bdb2e.css",
+    "main.js": "/yourshape/static/js/main.389f345b.js",
+    "static/media/logo.jpg": "/yourshape/static/media/logo.c129198d876e39791ebf.jpg",
+    "index.html": "/yourshape/index.html",
+    "main.c08bdb2e.css.map": "/yourshape/static/css/main.c08bdb2e.css.map",
+    "main.389f345b.js.map": "/yourshape/static/js/main.389f345b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c08bdb2e.css",
+    "static/js/main.389f345b.js"
+  ]
+}
