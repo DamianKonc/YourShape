@@ -2,7 +2,6 @@
   "name": "yourshape",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://damiankonc.github.io/yourshape",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -18,6 +17,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "sass": "^1.52.3",
+    "serve": "^14.0.1",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
