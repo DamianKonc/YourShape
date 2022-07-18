@@ -5,7 +5,7 @@ import Dashboard from "./dashboard/Dashboard";
 import Login from "./login/Login";
 import ForgotPassword from "./forgotpassword/ForgotPassword";
 import { AuthProvider } from "../context/AuthContext";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UpdateProfile from "./updateprofile/UpdateProfile";
 import Workout from "./workout/Workout";
 import YourResults from "./yourResults/YourResults";
@@ -14,7 +14,7 @@ import "./app.scss";
 function App() {
   return (
     <div className="app">
-      <Router>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <AuthProvider>
           <Routes>
             <Route exact path="/dashboard" element={<Dashboard />} />
@@ -26,7 +26,7 @@ function App() {
             <Route path="/dashboard/yourresults" element={<YourResults />} />
           </Routes>
         </AuthProvider>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }
