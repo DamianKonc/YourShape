@@ -29,8 +29,8 @@ export default function Modal({
 
   const [display, setDisplay] = useState("none");
   const [itemId, setItemId] = useState(0);
-  const [repsValue, setRepsValue] = useState();
-  const [weightsValues, setWieghtsValues] = useState();
+  const [repsValue, setRepsValue] = useState("");
+  const [weightsValues, setWieghtsValues] = useState("");
 
   const handleSubmitWithWeights = (e) => {
     e.preventDefault();
