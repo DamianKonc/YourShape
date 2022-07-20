@@ -45,7 +45,7 @@ const SignUp = () => {
   }
 
   return (
-    <>
+    <div className="wrapper">
       <Logo />
       {error && <div>{error}</div>}
       <form className="signup__form" onSubmit={handleSubmit}>
@@ -113,7 +113,7 @@ const SignUp = () => {
           Log In
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 
