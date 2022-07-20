@@ -32,6 +32,10 @@ export default function Modal({
   const [repsValue, setRepsValue] = useState("");
   const [weightsValues, setWieghtsValues] = useState("");
 
+  console.log(repsValue);
+  console.log(weightsValues);
+  console.log(repsValue * weightsValues);
+
   const handleSubmitWithWeights = (e) => {
     e.preventDefault();
     const docID = uuidv4();
@@ -41,7 +45,7 @@ export default function Modal({
       date: Timestamp.fromDate(new Date()),
       weight: parseInt(weightsValues),
       reps: parseInt(repsValue),
-      volume: parseInt(reps.current.value) * parseInt(reps.current.value),
+      volume: parseInt(reps.current.value) * parseInt(weight.current.value),
       ID: docID,
     };
 
