@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../dataBase/firebase";
 import "./signup.scss";
 
@@ -38,9 +38,7 @@ const SignUp = () => {
       birthDate: `${birthDayRef.current.value}`,
       email: `${emailRef.current.value}`,
       isAdmin: false,
-    })
-      .document()
-      .collection("workout");
+    });
     setLoading(false);
   }
 
@@ -103,7 +101,7 @@ const SignUp = () => {
             placeholder="Check password"
           />
         </label>
-        <button className="signup__form-btn" type="submit" disabled={loading}>
+        <button className="signup__form-btn" type="submit">
           Sign Up
         </button>
       </form>
