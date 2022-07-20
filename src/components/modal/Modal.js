@@ -32,10 +32,6 @@ export default function Modal({
   const [repsValue, setRepsValue] = useState("");
   const [weightsValues, setWieghtsValues] = useState("");
 
-  console.log(repsValue);
-  console.log(weightsValues);
-  console.log(repsValue * weightsValues);
-
   const handleSubmitWithWeights = (e) => {
     e.preventDefault();
     const docID = uuidv4();
