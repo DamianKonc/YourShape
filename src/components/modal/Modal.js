@@ -188,17 +188,15 @@ export default function Modal({
           <div className="modal__dataStorage">
             {dataFromdb &&
               dataFromdb.map((el, id) => (
-                <>
-                  <div key={id} className="modal-div">
-                    <span className="modal-span">
-                      <p>Date:</p> {el.date}
-                    </span>
-                    <span className="modal-span">
-                      <p>Seconds:</p> {el.reps}
-                    </span>
-                    <button onClick={() => handleChange(el)}>Change</button>
-                  </div>
-                </>
+                <div key={id} className="modal-div">
+                  <span className="modal-span">
+                    <p>Date:</p> {el.date}
+                  </span>
+                  <span className="modal-span">
+                    <p>Seconds:</p> {el.reps}
+                  </span>
+                  <button onClick={() => handleChange(el)}>Change</button>
+                </div>
               ))}
           </div>
 
