@@ -137,6 +137,8 @@ export default function Modal({
       reps: repsValue,
       volume: repsValue,
     });
+
+    setRepsValue("");
   };
 
   const sendChangeswithWeights = async (e) => {
@@ -157,6 +159,8 @@ export default function Modal({
       weight: weightsValues,
       volume: repsValue * weightsValues,
     });
+    setRepsValue("");
+    setWieghtsValues("");
   };
 
   if (bodyPart === "Stomach" && idDoc === "Plank") {
