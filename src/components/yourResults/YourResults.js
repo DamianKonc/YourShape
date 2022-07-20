@@ -1,15 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import {
-  collection,
-  query,
-  getDocs,
-  where,
-  doc,
-  getDoc,
-  QuerySnapshot,
-} from "firebase/firestore";
+import { collection, query, getDocs, where } from "firebase/firestore";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -52,6 +44,12 @@ export default function YourResults() {
     "Alternating elbow to knee crunch"
   );
   const [wourkoutData, setWorkoutData] = useState([]);
+
+  useEffect(() => {
+    if (exNameArr.length) {
+      setExName(exNameArr[0].replaceAll(" ", ""));
+    }
+  }, [exNameArr]);
 
   const options = {
     responsive: true,
@@ -143,12 +141,6 @@ export default function YourResults() {
   const dateOfWorkout = {};
   let sum = [];
   const labels = [];
-
-  // for (const key in workoutarr) {
-  //   objOfRepsSumm[key] = workoutarr[key]
-  //     .map((el) => el.reps)
-  //     .reduce((el1, el2) => el1 + el2);
-  // }
 
   for (const key in workoutarr) {
     objOfRepsSumm[key] = workoutarr[key]
